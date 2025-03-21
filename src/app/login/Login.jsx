@@ -1,15 +1,18 @@
 "use client"
 
-import React,{useState} from 'react'
+import React, {  useState } from "react";
 import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
+import { login } from '@/services/userService';
 const Login = () => {
+  const router = useRouter();
 
     const [loginData, setLoginData] = useState({
         email: "",
         password: "",
       });
 
-    const loginFormSubmitted=(e)=>{
+    const loginFormSubmitted=async (e)=>{
         e.preventDefault();
         console.log(loginData)
         if (loginData.email.trim() === "" || loginData.password.trim() === "") {
@@ -18,7 +21,27 @@ const Login = () => {
             });
             return;
           }
+
+
+
+              //valid data
+    //login
+
+    try {
+      const result = await login(loginData);
+      console.log(result);
+      toast.success("Logged In");
+      //redirect
+
+      router.push("/profile/user");
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message, {
+        position: "top-center",
+      });
     }
+  };
+    
   return (
     <div className="grid grid-cols-12">
     <div className="col-span-4 col-start-5 ">
