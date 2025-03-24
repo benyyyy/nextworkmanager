@@ -12,6 +12,7 @@ const Login = () => {
         password: "",
       });
 
+      //for invalid data
     const loginFormSubmitted=async (e)=>{
         e.preventDefault();
         console.log(loginData)
@@ -21,10 +22,7 @@ const Login = () => {
             });
             return;
           }
-
-
-
-              //valid data
+    //valid data
     //login
 
     try {
