@@ -8,18 +8,20 @@ import { currentUser } from "@/services/userService";
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(undefined);
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const tempUser = await currentUser();
-        console.log(tempUser);
-        setUser({ ...tempUser });
-      } catch (error) {
-        console.log(error);
-        // toast.error("error in loading current  user");
-        setUser(undefined);
-      }
+
+  async function load() {
+    try {
+      const tempUser = await currentUser();
+      console.log(tempUser);
+      setUser({ ...tempUser });
+    } catch (error) {
+      console.log(error);
+      // toast.error("error in loading current  user");
+      setUser(undefined);
     }
+  }
+  useEffect(() => {
+  
     load();
   }, []);
 

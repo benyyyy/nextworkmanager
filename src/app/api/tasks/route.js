@@ -2,6 +2,7 @@ import { Task } from "@/models/task";
 import { NextResponse } from "next/server";
 import { connectDb } from "@/helper/db";
 import { getResponseMessage } from "@/helper/responseMessage";
+import jwt from "jsonwebtoken";
 connectDb();
 //get all the tasks
 export async function GET(request) {
@@ -19,9 +20,9 @@ export async function GET(request) {
     const { title, content, userId, status } = await request.json();
   
     // fetching logged in user id
-   // const authToken = request.cookies.get("authToken")?.value;
+    const authToken = request.cookies.get("authToken")?.value;
     // console.log(authToken);
-   // const data = jwt.verify(authToken, process.env.JWT_KEY);
+    const data = jwt.verify(authToken, process.env.JWT_KEY);
     // console.log(data);
     //console.log(data._id);
   
@@ -29,7 +30,7 @@ export async function GET(request) {
       const task = new Task({
         title,
         content,
-        userId,
+        userId: data._id,
         status,
       });
   

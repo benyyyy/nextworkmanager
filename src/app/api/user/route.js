@@ -3,20 +3,23 @@ import { NextResponse } from "next/server";
 import { User } from "@/models/user";
 import bcrypt from "bcryptjs";
 
-connectDb();
 
-// GET function to fetch users from database
-export async function GET() {
+
+// get request function
+export async function GET(request) {
+  let users = [];
   try {
-    const users = await User.find(); // Fetch users from DB
-    return NextResponse.json(users, { status: 200 });
+    await connectDb();
+    users = await User.find().select("-password");
   } catch (error) {
     console.log(error);
-    return NextResponse.json(
-      { message: "Failed to fetch users", status: false },
-      { status: 500 }
-    );
+    return NextResponse.json({
+      message: "failed to get users",
+      success: false,
+    });
   }
+
+  return NextResponse.json(users);
 }
 
 // POST function to create a user
@@ -45,6 +48,7 @@ export async function POST(request) {
     );
 
     console.log(user);
+    await connectDb();
     const createdUser = await user.save();
     const response = NextResponse.json(user, {
       status: 201,

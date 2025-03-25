@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { User } from "@/models/user";
+ import { connectDb } from "@/helper/db";
 
+// connectDb();
 
 // export const GET=()=>{
 
@@ -9,6 +11,7 @@ import { User } from "@/models/user";
 // get user
 export async function GET(request, { params }) {
   const { userId } =await  params;
+   await connectDb();
   const user = await User.findById(userId).select("-password");//ye password nai chaiye output mei isliye - hai 
   return NextResponse.json(user);
 }
